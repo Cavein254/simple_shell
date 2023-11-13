@@ -1,29 +1,21 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int print_id()
+int main ()
 {
 	pid_t pid;
-	printf("Function with the process id %d begins\n",getpid());
 	pid = fork();
 	if (pid == -1)
 	{
-		printf("Error\n");
-		return (1);
+		printf("Error occured initializing the child \n");
 	}
-	printf("The parent is  %d begins\n", getppid());
-	return (0);
-}
-int main ()
-{
-	int x;
-
-	x = 2;
-
-	while (x > 0)
+	if (pid == 0)
 	{
-		print_id();
-		x--;
+		printf("Running the child process \n");
+	} else
+	{
+		sleep(40);
+		printf("The parent process running \n");
 	}
 	return (0);
 }
