@@ -1,15 +1,25 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void print_id()
+int print_id()
 {
+	pid_t pid;
 	printf("Function with the process id %d begins\n",getpid());
-	printf("The parent is  %d begins\n",getppid());
+	pid = fork();
+	if (pid == -1)
+	{
+		printf("Error\n");
+		return (1);
+	}
+	printf("The parent is  %d begins\n", getppid());
+	return (0);
 }
 int main ()
 {
 	int x;
-	x = 10;
+
+	x = 2;
+
 	while (x > 0)
 	{
 		print_id();
