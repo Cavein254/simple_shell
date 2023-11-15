@@ -1,5 +1,22 @@
 #include "c_shell.h"
 /**
+ * allocate_malloc - safely allocate memory
+ * Returns: 0 for success, -1 otherwise
+ */
+int allocate_malloc(char **tkns_v, int pos, size_t buf) {
+  int i;
+
+  i = 0;
+  tkns_v[pos] = malloc(buff);
+  if (tkns_v[pos] == NULL) {
+    while (i < pos)
+      free(tkns_v[i++]);
+    free(tkns_v);
+    return (1);
+  }
+  return (0);
+}
+/**
  * place_tkns - positions tokens correctly in malloc
  * Returns: 0 for success
  */
