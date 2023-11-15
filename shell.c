@@ -34,7 +34,8 @@ int main(void) {
         perror("Error: execve failed");
     } else
       wait(&status);
+    /*free resources*/
+    free(list_args);
   }
-  free(list_args);
   return (0);
 }
