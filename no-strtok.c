@@ -7,7 +7,7 @@ int allocate_malloc(char **tkns_v, int pos, size_t buf) {
   int i;
 
   i = 0;
-  tkns_v[pos] = malloc(buff);
+  tkns_v[pos] = malloc(buf);
   if (tkns_v[pos] == NULL) {
     while (i < pos)
       free(tkns_v[i++]);
@@ -15,6 +15,11 @@ int allocate_malloc(char **tkns_v, int pos, size_t buf) {
     return (1);
   }
   return (0);
+}
+void tkn_cpy(char *dest, const char *source, size_t len) {
+  while (*source && --len)
+    *dest++ = *source++;
+  *dest = '\0';
 }
 /**
  * place_tkns - positions tokens correctly in malloc
@@ -34,16 +39,18 @@ int place_tkns(char **tkns_v, char const *str, char delimiter) {
       ++str;
     }
     if (tkn_size) {
-      allocate_malloc(tkns_v, pos, tkn_size + 1);
+      if (allocate_malloc(tkns_v, pos, tkn_size + 1))
+        return (-1);
     }
-    strlcpy(tkns_v[pos], str - tkn_size, tkn_size + 1);
+    tkn_cpy(tkns_v[pos], str - tkn_size, tkn_size + 1);
   }
+  return (0);
 }
 /**
  * no_tkns - counts the number of tokens in a string
  * Returns: number of tokens
  */
-size_t no_tkns(*str, char delimiter) {
+size_t no_tkns(const char *str, char delimiter) {
   size_t tkns;
   bool is_word;
 
@@ -74,7 +81,7 @@ char **no_strtok(const char *str, char delimiter) {
   if (str == NULL)
     return NULL;
   /**Allocate spaces to token pointers*/
-  tkns_v = malloc((sizeof char *)*(tkns + 1));
+  tkns_v = malloc((sizeof(char *)) * (tkns + 1));
   if (tkns_v == NULL)
     return NULL;
   /**argv must end in NULL*/
@@ -82,4 +89,12 @@ char **no_strtok(const char *str, char delimiter) {
   place_tkns(tkns_v, str, delimiter);
 }
 
-int main() { return (0); }
+int main() {
+  char *str = "    hello there dude";
+  char delimiter = ' ';
+  char **tokens = no_strtok(str, delimiter);
+
+  while (*tokens)
+    printf("%s\n", *tokens++);
+  return (0);
+}
