@@ -16,6 +16,10 @@ int allocate_malloc(char **tkns_v, int pos, size_t buf) {
   }
   return (0);
 }
+/**
+ * tkn_cpy - copies the values of one string to the other
+ * Return: does not return
+ */
 void tkn_cpy(char *dest, const char *source, size_t len) {
   while (*source && --len)
     *dest++ = *source++;
@@ -43,6 +47,7 @@ int place_tkns(char **tkns_v, char const *str, char delimiter) {
         return (-1);
     }
     tkn_cpy(tkns_v[pos], str - tkn_size, tkn_size + 1);
+    ++pos;
   }
   return (0);
 }
@@ -86,7 +91,9 @@ char **no_strtok(const char *str, char delimiter) {
     return NULL;
   /**argv must end in NULL*/
   tkns_v[tkns] = NULL;
-  place_tkns(tkns_v, str, delimiter);
+  if (place_tkns(tkns_v, str, delimiter))
+    return NULL;
+  return tkns_v;
 }
 
 int main() {
