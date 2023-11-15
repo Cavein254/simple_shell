@@ -20,7 +20,7 @@ int allocate_malloc(char **tkns_v, int pos, size_t buf) {
  * place_tkns - positions tokens correctly in malloc
  * Returns: 0 for success
  */
-int place_tkns(char **tkns_v, char *str, char delimiter) {
+int place_tkns(char **tkns_v, char const *str, char delimiter) {
   size_t tkn_size;
   int pos;
 
@@ -34,7 +34,7 @@ int place_tkns(char **tkns_v, char *str, char delimiter) {
       ++str;
     }
     if (tkn_size) {
-      allocate_malloc(tkns_v, pos, tkn_size + 1, tkn_size + 1);
+      allocate_malloc(tkns_v, pos, tkn_size + 1);
     }
     strlcpy(tkns_v[pos], str - tkn_size, tkn_size + 1);
   }
@@ -65,7 +65,7 @@ size_t no_tkns(*str, char delimiter) {
 /**
  *
  * */
-char **no_strtok(*str, char delimiter) {
+char **no_strtok(const char *str, char delimiter) {
   size_t tkns;
   char **tkns_v;
 
